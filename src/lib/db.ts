@@ -7,7 +7,7 @@ type Item = {
   quantity: number;
 };
 
-type Database = {
+export type Database = {
   items: Item;
 };
 
@@ -24,6 +24,8 @@ export const db = new Kysely<Database>({
 });
 
 export async function initDb() {
+  console.log("Initializing database...");
+  // await db.schema.dropTable("items").execute();
   await db.schema
     .createTable("items")
     .ifNotExists()
