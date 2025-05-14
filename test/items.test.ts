@@ -4,7 +4,7 @@ import { items } from "../src/db/test-schema";
 import { db } from "../src/db/test-db";
 import { sql } from "drizzle-orm";
 import { migrate } from "drizzle-orm/better-sqlite3/migrator";
-import { createItemsRouter } from "../src/routes/items";
+import { createItemsRouter } from "../src/api/items/router";
 
 let app: express.Express;
 

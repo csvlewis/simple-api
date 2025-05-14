@@ -1,13 +1,13 @@
 import request from "supertest";
 import express from "express";
-import { pingRouter } from "../src/routes/ping";
+import { createPingRouter } from "../src/api/ping/router";
 
 let app: express.Express;
 
 beforeAll(async () => {
   app = express();
   app.use(express.json());
-  app.use("/ping", pingRouter);
+  app.use("/ping", createPingRouter());
 });
 
 test("get /ping returns 'pong'", async () => {
