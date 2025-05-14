@@ -1,6 +1,9 @@
 import request from "supertest";
 import express from "express";
-import { testDb } from "../src/lib/testDb";
+import { items } from "../src/db/test-schema";
+import { db } from "../src/db/test-db";
+import { sql } from "drizzle-orm";
+import { migrate } from "drizzle-orm/better-sqlite3/migrator";
 import { createItemsRouter } from "../src/routes/items";
 
 let app: express.Express;
@@ -8,39 +11,40 @@ let app: express.Express;
 beforeAll(async () => {
   app = express();
   app.use(express.json());
-  app.use("/items", createItemsRouter(testDb));
-
-  await testDb.schema
-    .createTable("items")
-    .addColumn("id", "integer", (col) => col.primaryKey().autoIncrement())
-    .addColumn("name", "text")
-    .addColumn("quantity", "integer")
-    .execute();
+  app.use("/items", createItemsRouter(db));
+  await migrate(db, { migrationsFolder: "./test-migrations" });
+  await db.insert(items).values([
+    {
+      name: "Item 1",
+      description: "Description 1",
+      quantity: 10,
+    },
+    {
+      name: "Item 2",
+      description: "Description 2",
+      quantity: 20,
+    },
+  ]);
 });
 
 afterEach(async () => {
-  await testDb.deleteFrom("items").execute();
+  await db.run(sql`DELETE FROM items;`);
 });
 
-afterAll(async () => {
-  await testDb.destroy();
+afterAll(() => {
+  db.$client.close();
 });
 
-test("GET /items returns all items", async () => {
-  await testDb
-    .insertInto("items")
-    .values([
-      { name: "Bolt", quantity: 10 },
-      { name: "Nut", quantity: 20 },
-    ])
-    .execute();
-  const res = await request(app).get("/items");
-  expect(res.status).toBe(200);
-  expect(res.body.length).toBe(2);
-  expect(res.body[0].id).toBe(1);
-  expect(res.body[0].name).toBe("Bolt");
-  expect(res.body[0].quantity).toBe(10);
-  expect(res.body[1].id).toBe(2);
-  expect(res.body[1].name).toBe("Nut");
-  expect(res.body[1].quantity).toBe(20);
+test("get /items returns all items", async () => {
+  const result = await request(app).get("/items");
+  expect(result.status).toBe(200);
+  expect(result.body.length).toBe(2);
+  expect(result.body[0].id).toBe(1);
+  expect(result.body[0].name).toBe("Item 1");
+  expect(result.body[0].description).toBe("Description 1");
+  expect(result.body[0].quantity).toBe(10);
+  expect(result.body[1].id).toBe(2);
+  expect(result.body[1].name).toBe("Item 2");
+  expect(result.body[1].description).toBe("Description 2");
+  expect(result.body[1].quantity).toBe(20);
 });
