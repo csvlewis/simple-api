@@ -10,8 +10,8 @@ beforeAll(async () => {
   app.use("/ping", pingRouter);
 });
 
-test("GET /ping returns 'pong'", async () => {
-  const res = await request(app).get("/ping");
-  expect(res.status).toBe(200);
-  expect(res.body).toEqual({ message: "pong" });
+test("get /ping returns 'pong'", async () => {
+  const result = await request(app).get("/ping");
+  expect(result.status).toBe(200);
+  expect(result.body.message).toBe("pong");
 });

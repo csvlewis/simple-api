@@ -1,14 +1,14 @@
 import { Router } from "express";
-import { Kysely } from "kysely";
-import { Database as DB } from "../lib/db";
+import { items } from "../db/schema";
 
-export function createItemsRouter(db: Kysely<DB>) {
-  const router = Router();
+// @ts-ignore
+export function createItemsRouter(db) {
+  const itemsRouter = Router();
 
-  router.get("/", async (req, res) => {
-    const items = await db.selectFrom("items").selectAll().execute();
-    res.json(items);
+  itemsRouter.get("/", async (req, res) => {
+    const allItems = await db.select().from(items);
+    res.json(allItems);
   });
 
-  return router;
+  return itemsRouter;
 }
