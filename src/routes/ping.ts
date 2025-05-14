@@ -1,9 +1,7 @@
 import { Router } from "express";
 
-const router = Router();
+export const pingRouter = Router();
 
-router.get("/", (req, res) => {
+pingRouter.get("/", (req, res) => {
   res.json({ message: "pong" });
 });
-
-export default router;
