@@ -27,7 +27,7 @@ afterAll(async () => {
 });
 
 describe("GET /items", () => {
-  test("GET /items all items", async () => {
+  test("returns all items", async () => {
     await db.insert(items).values([
       {
         name: "Item 1",
@@ -55,7 +55,7 @@ describe("GET /items", () => {
 });
 
 describe("POST /items", () => {
-  test("POST /items with valid data returns 201", async () => {
+  test("with valid data returns 201", async () => {
     const response = await request(app).post("/items").send({
       name: "Test Item",
       description: "Item Description",
@@ -66,7 +66,7 @@ describe("POST /items", () => {
     expect(response.body.description).toBe("Item Description");
     expect(response.body.quantity).toBe(10);
   });
-  test("POST /items with missing name returns 400", async () => {
+  test("with missing name returns 400", async () => {
     const response = await request(app)
       .post("/items")
       .send({ description: "Item Description", quantity: 10 });
@@ -76,7 +76,7 @@ describe("POST /items", () => {
 });
 
 describe("DELETE /items", () => {
-  test("should delete an item and return 204", async () => {
+  test("deletes an item and returns a 204 status", async () => {
     const [item] = await db
       .insert(items)
       .values({
@@ -91,14 +91,14 @@ describe("DELETE /items", () => {
     expect(response.status).toBe(204);
   });
 
-  test("should return 400 if ID is not provided", async () => {
+  test("returns a 400 status if ID is not provided", async () => {
     const response = await request(app).delete("/items").send({});
 
     expect(response.status).toBe(400);
     expect(response.body.message).toBe("ID is required");
   });
 
-  test("should return 404 if item does not exist", async () => {
+  test("returns a 404 status if item does not exist", async () => {
     const response = await request(app)
       .delete("/items")
       .send({ id: "f70dca23-a6ba-4da5-880a-9ef5be8bb79d" });
