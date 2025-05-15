@@ -1,10 +1,10 @@
 import request from "supertest";
 import express from "express";
-import { items } from "../src/db/test-schema";
-import { db } from "../src/db/test-db";
 import { sql } from "drizzle-orm";
 import { migrate } from "drizzle-orm/better-sqlite3/migrator";
-import { createItemsRouter } from "../src/api/items/router";
+import { items } from "@/db/test-schema";
+import { db } from "@/db/test-db";
+import { createItemsRouter } from "@/api/items/router";
 
 let app: express.Express;
 

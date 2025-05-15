@@ -1,6 +1,6 @@
 import request from "supertest";
 import express from "express";
-import { createPingRouter } from "../src/api/ping/router";
+import { createPingRouter } from "@/api/ping/router";
 
 let app: express.Express;
 
