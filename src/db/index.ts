@@ -6,7 +6,7 @@ const pool = new Pool({
   host: "localhost",
   port: 5432,
   user: "admin",
-  database: "test",
+  database: "postgres",
 });
 
 export const db = drizzle(pool, { schema });

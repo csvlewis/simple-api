@@ -1,10 +1,13 @@
 import { Router } from "express";
-import { getAllItems } from "./controller";
+import type { NodePgDatabase } from "drizzle-orm/node-postgres";
+import { schema } from "@/db/schema";
+import { createItem, deleteItem, getItems } from "./controller";
 
-export function createItemsRouter(db: any) {
+export function createItemsRouter(db: NodePgDatabase<typeof schema>) {
   const router = Router();
-
-  router.get("/", getAllItems(db));
+  router.get("/", getItems(db));
+  router.post("/", createItem(db));
+  router.delete("/", deleteItem(db));
 
   return router;
 }

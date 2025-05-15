@@ -10,6 +10,11 @@ beforeAll(async () => {
   app.use("/ping", createPingRouter());
 });
 
+test("GET invalid route returns 404", async () => {
+  const result = await request(app).get("/invalid");
+  expect(result.status).toBe(404);
+});
+
 test("get /ping returns 'pong'", async () => {
   const result = await request(app).get("/ping");
   expect(result.status).toBe(200);
