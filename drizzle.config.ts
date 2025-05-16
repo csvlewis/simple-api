@@ -5,6 +5,6 @@ export default defineConfig({
   schema: "./src/db/schema.ts",
   out: "./migrations",
   dbCredentials: {
-    url: "postgres://admin:admin@localhost:5432/postgres",
+    url: "postgres://admin:admin@localhost:5432/test",
   },
 });

@@ -40,7 +40,7 @@ If you modify `/src/db/schema.ts`, you’ll need to:
 1.  Generate migrations (you might want to delete the sample ones inside /migrations first):
 
 ```sh
-npx drizzle-kit generate
+npm run create-migrations
 ```
 
 2.  Set the correct `dbCredentials.url` in `drizzle.config.ts`
@@ -48,7 +48,7 @@ npx drizzle-kit generate
 3.  Apply migrations:
 
 ```sh
-npx drizzle-kit push
+npm run migrate
 ```
 
 Repeat for both the development and test databases. If you want to use the existing schema without changes, do steps 2 and 3 without generating a new migration.
